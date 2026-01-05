@@ -162,7 +162,7 @@
             <form id="adForm" class="space-y-5">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input type="text" id="adTitle" placeholder="Titre" required class="border-b-2 py-2 outline-none">
-                    <input type="number" id="adPrice" placeholder="Prix (AED)" required class="border-b-2 py-2 outline-none">
+                    <input type="number" id="adPrice" placeholder="Prix (Da)" required class="border-b-2 py-2 outline-none">
                 </div>
                 <div class="bg-red-50 p-6 rounded-2xl border-2 border-dashed border-red-200 text-center">
                     <label for="adFiles" class="cursor-pointer block"><i class="fas fa-images text-4xl text-red-400 mb-2"></i><p class="font-bold text-red-600">Charger des photos depuis le bureau</p></label>
@@ -289,7 +289,7 @@
                         </button>`}
                         <img onclick="showDetails(${ad.id})" src="${ad.images[0]}" class="h-48 w-full object-cover cursor-pointer transition group-hover:scale-105">
                         <div class="p-4">
-                            <h4 class="text-red-600 font-black text-xl">${ad.price.toLocaleString()} AED</h4>
+                            <h4 class="text-red-600 font-black text-xl">${ad.price.toLocaleString()} Da</h4>
                             <p class="font-bold text-gray-800 line-clamp-1">${ad.title}</p>
                             <p class="text-[10px] uppercase font-black text-gray-400 mb-2">${ad.loc}</p>
                             <div class="text-sm font-bold text-green-600"><i class="fas fa-phone-alt"></i> ${ad.phone}</div>
@@ -301,7 +301,7 @@
         function showDetails(id) {
             const ad = ads.find(x => x.id === id);
             document.getElementById('detailTitle').innerText = ad.title;
-            document.getElementById('detailPrice').innerText = ad.price.toLocaleString() + " AED";
+            document.getElementById('detailPrice').innerText = ad.price.toLocaleString() + " Da";
             document.getElementById('detailLoc').innerText = ad.loc + " • " + ad.category;
             document.getElementById('detailDesc').innerText = ad.desc;
             document.getElementById('detName').innerText = ad.seller;
