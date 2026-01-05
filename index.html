@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRIDZ Pro - Catalogue Complet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .page { display: none; }
+        .page.active { display: block; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .card-shadow { box-shadow: 0 4px 20px -2px rgba(0,0,0,0.05); }
+        .gallery-img { min-width: 100%; height: 350px; object-fit: cover; border-radius: 1rem; }
+        #previewContainer img { width: 70px; height: 70px; object-fit: cover; border-radius: 10px; border: 2px solid #fee2e2; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 mb-20 md:mb-0">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between mb-3">
+                <h1 onclick="showPage('home')" class="text-3xl font-black text-red-600 cursor-pointer tracking-tighter italic">CHRIDZ</h1>
+                <div class="flex gap-3 items-center">
+                    <button onclick="showPage('favorites')" class="text-gray-500 hover:text-red-500 transition"><i class="far fa-heart text-xl"></i></button>
+                    <div id="authStatus"></div>
+                    <button onclick="showPage('add')" class="hidden md:block bg-red-600 text-white px-5 py-2 rounded-lg font-bold">Vendre</button>
+                </div>
+            </div>
+            
+            <div class="flex gap-2">
+                <div class="relative flex-1">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    <input type="text" id="globalSearch" onkeyup="filterAds()" placeholder="Chercher une voiture, un villa..." class="w-full bg-gray-100 border-none rounded-xl py-2 pl-10 focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+                <select id="catFilter" onchange="filterAds()" class="bg-gray-100 border-none rounded-xl px-3 text-sm font-bold outline-none">
+                    <option value="">Toutes catégories</option>
+                    <option value="Moteurs">🚗 Moteurs (Voitures)</option>
+                    <option value="Immobilier">🏠 Immobilier</option>
+                    <option value="Mobiles">📱 Mobiles & Tablettes</option>
+                    <option value="Électronique">💻 Électronique & Ordinateurs</option>
+                    <option value="Maison">🛋️ Maison, Jardin & Meubles</option>
+                    <option value="Emplois">💼 Emplois</option>
+                    <option value="Services">🛠️ Services professionnels</option>
+                    <option value="Animaux">🐾 Animaux de compagnie</option>
+                    <option value="Loisirs">⚽ Sports & Loisirs</option>
+                    <option value="Vêtements">👕 Mode & Beauté</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <nav class="md:hidden fixed bottom-0 w-full bg-white border-t flex justify-around py-3 z-50 shadow-2xl">
+        <button onclick="showPage('home')" class="flex flex-col items-center text-gray-400"><i class="fas fa-home"></i><span class="text-[10px]">Accueil</span></button>
+        <button onclick="showPage('add')" class="flex flex-col items-center text-red-600 font-bold"><i class="fas fa-plus-circle text-2xl"></i><span class="text-[10px]">Vendre</span></button>
+        <button onclick="showPage('profile')" class="flex flex-col items-center text-gray-400"><i class="fas fa-user-circle"></i><span class="text-[10px]">Profil</span></button>
+    </nav>
+
+<main id="home" class="page active max-w-6xl mx-auto px-4 py-6">
+        <div class="flex gap-4 overflow-x-auto pb-6 no-scrollbar mb-4">
+            <button onclick="setCategoryFilter('Moteurs')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-car text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Auto</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Immobilier')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-building text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Immo</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Mobiles')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-mobile-alt text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Mobiles</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Électronique')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-laptop text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Électro</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Maison')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-couch text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Maison</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Emplois')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-briefcase text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Emplois</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Services')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-tools text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Services</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Animaux')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-paw text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Animaux</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Loisirs')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-volleyball-ball text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Loisirs</span>
+            </button>
+
+            <button onclick="setCategoryFilter('Vêtements')" class="flex-shrink-0 flex flex-col items-center w-20">
+                <div class="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mb-1 transition active:scale-90 shadow-sm">
+                    <i class="fas fa-tshirt text-xl"></i>
+                </div>
+                <span class="text-[11px] font-bold">Mode</span>
+            </button>
+        </div>
+
+        <div id="adGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+    </main>
+    <main id="details" class="page max-w-4xl mx-auto px-4 py-6">
+        <button onclick="showPage('home')" class="mb-4 text-red-600 font-bold flex items-center gap-2"><i class="fas fa-arrow-left"></i> Retour</button>
+        <div class="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+            <div id="detailGallery" class="flex overflow-x-auto snap-x snap-mandatory gap-2 p-4 bg-gray-100 no-scrollbar"></div>
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-2">
+                    <h2 id="detailTitle" class="text-3xl font-black text-gray-800"></h2>
+                    <p id="detailPrice" class="text-3xl font-black text-red-600"></p>
+                </div>
+                <p id="detailLoc" class="text-gray-400 font-bold uppercase text-xs mb-6"></p>
+                <p id="detailDesc" class="text-gray-600 leading-relaxed mb-8 whitespace-pre-line"></p>
+                <div class="bg-gray-50 p-6 rounded-2xl border flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-red-600 text-white rounded-full flex items-center justify-center text-xl font-bold" id="detInitial"></div>
+                        <div><p class="text-xs text-gray-400 uppercase font-bold">Vendeur</p><p id="detName" class="font-black text-lg"></p></div>
+                    </div>
+                    <div class="text-center md:text-right w-full md:w-auto">
+                        <p id="detPhone" class="text-2xl font-black text-green-600 mb-2"></p>
+                        <a id="detCall" href="" class="w-full bg-green-500 text-white px-10 py-3 rounded-xl font-black flex items-center justify-center gap-2"><i class="fas fa-phone-alt"></i> APPELER</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="add" class="page max-w-2xl mx-auto px-4 py-8">
+        <div class="bg-white p-8 rounded-3xl shadow-xl border">
+            <h2 class="text-2xl font-black mb-8 border-b pb-4">Vendre un article</h2>
+            <form id="adForm" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="adTitle" placeholder="Titre" required class="border-b-2 py-2 outline-none">
+                    <input type="number" id="adPrice" placeholder="Prix (AED)" required class="border-b-2 py-2 outline-none">
+                </div>
+                <div class="bg-red-50 p-6 rounded-2xl border-2 border-dashed border-red-200 text-center">
+                    <label for="adFiles" class="cursor-pointer block"><i class="fas fa-images text-4xl text-red-400 mb-2"></i><p class="font-bold text-red-600">Charger des photos depuis le bureau</p></label>
+                    <input type="file" id="adFiles" multiple accept="image/*" class="hidden" onchange="previewImages()">
+                    <div id="previewContainer" class="flex flex-wrap gap-2 mt-4 justify-center"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="adSeller" placeholder="Votre nom" required class="border-b-2 py-2 outline-none">
+                    <input type="tel" id="adPhone" placeholder="Téléphone" required class="border-b-2 py-2 outline-none">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <select id="adCat" class="border-b-2 py-2 outline-none bg-transparent font-bold">
+                        <option>Moteurs</option>
+                        <option>Immobilier</option>
+                        <option>Mobiles</option>
+                        <option>Électronique</option>
+                        <option>Maison</option>
+                        <option>Emplois</option>
+                        <option>Services</option>
+                        <option>Animaux</option>
+                        <option>Loisirs</option>
+                        <option>Vêtements</option>
+                    </select>
+                    <input type="text" id="adLoc" placeholder="Localisation" required class="border-b-2 py-2 outline-none">
+                </div>
+                <textarea id="adDesc" placeholder="Description..." class="w-full border rounded-2xl p-4 h-32 outline-none"></textarea>
+                <button type="submit" class="w-full bg-red-600 text-white py-4 rounded-2xl font-black shadow-lg">PUBLIER</button>
+            </form>
+        </div>
+    </main>
+
+    <main id="auth" class="page max-w-md mx-auto px-4 py-12">
+        <div class="bg-white p-8 rounded-3xl shadow-xl border text-center">
+            <h2 id="authTitle" class="text-2xl font-black mb-6">Connexion</h2>
+            <input type="email" id="authEmail" placeholder="Email" class="w-full border p-3 rounded-xl mb-3 outline-none">
+            <input type="password" id="authPass" placeholder="Mot de passe" class="w-full border p-3 rounded-xl mb-6 outline-none">
+            <button onclick="handleAuth()" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold">Continuer</button>
+            <button onclick="toggleAuthMode()" id="authSwitch" class="mt-4 text-sm font-bold text-gray-500">Créer un compte</button>
+        </div>
+    </main>
+
+    <main id="profile" class="page max-w-4xl mx-auto px-4 py-8">
+        <div id="profileHead" class="bg-white p-6 rounded-3xl shadow-sm border mb-8 flex justify-between items-center"></div>
+        <div id="myAdsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </main>
+
+    <main id="favorites" class="page max-w-6xl mx-auto px-4 py-6">
+        <h2 class="text-2xl font-black mb-8 italic">Mes favoris ❤️</h2>
+        <div id="favGrid" class="grid grid-cols-1 md:grid-cols-4 gap-6"></div>
+    </main>
+
+    <script>
+        // BASE DE DONNÉES AVEC PLUS D'ARTICLES
+        let ads = JSON.parse(localStorage.getItem('dbz_final_v3')) || [
+            { id: 1, title: "Mercedes G-Wagon G63", price: 850000, category: "Moteurs", seller: "Karim", phone: "0501112233", loc: "Dubai Marina", images: ["https://images.unsplash.com/photo-1520050206274-a1af446338cb?w=800"], desc: "Full options, 2024, 0km.", owner: "admin@test.com", fav: false },
+            { id: 2, title: "Penthouse avec vue Mer", price: 4200000, category: "Immobilier", seller: "Sarah", phone: "0567778899", loc: "Palm Jumeirah", images: ["https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800"], desc: "4 chambres, piscine privée.", owner: "admin@test.com", fav: false },
+            { id: 3, title: "iPhone 15 Pro Max 512GB", price: 4500, category: "Mobiles", seller: "Yassin", phone: "0554443322", loc: "Deira", images: ["https://images.unsplash.com/photo-1696446701796-da61225697cc?w=800"], desc: "Neuf scellé, garantie 1 an.", owner: "admin@test.com", fav: false },
+            { id: 4, title: "Canapé d'angle Moderne", price: 2500, category: "Maison", seller: "Amine", phone: "0509998877", loc: "JVC", images: ["https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"], desc: "Très bon état, gris anthracite.", owner: "admin@test.com", fav: false },
+            { id: 5, title: "Lamborghini Huracan", price: 1200000, category: "Moteurs", seller: "Omar", phone: "0581234567", loc: "Downtown", images: ["https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800"], desc: "V10, 2023, Orange.", owner: "admin@test.com", fav: false },
+            { id: 6, title: "Villa 5 Chambres", price: 6500000, category: "Immobilier", seller: "Layla", phone: "0522223344", loc: "Arabian Ranches", images: ["https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800"], desc: "Grand jardin et piscine.", owner: "admin@test.com", fav: false },
+            { id: 7, title: "MacBook Pro M3", price: 7800, category: "Mobiles", seller: "Mehdi", phone: "0543332211", loc: "Business Bay", images: ["https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800"], desc: "16GB RAM, 1TB SSD.", owner: "admin@test.com", fav: false },
+            { id: 8, title: "Table à manger Marbre", price: 3200, category: "Maison", seller: "Nora", phone: "0505556677", loc: "Sharjah", images: ["https://images.unsplash.com/photo-1577145946459-39a587ed523f?w=800"], desc: "6 chaises incluses, luxe.", owner: "admin@test.com", fav: false }
+        ];
+
+        let users = JSON.parse(localStorage.getItem('dbz_users')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('dbz_logged_in')) || null;
+        let isLoginMode = true;
+        let uploadedImagesBase64 = [];
+
+        // PREVIEW PHOTOS
+        function previewImages() {
+            const files = document.getElementById('adFiles').files;
+            const preview = document.getElementById('previewContainer');
+            preview.innerHTML = ''; uploadedImagesBase64 = [];
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImagesBase64.push(e.target.result);
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // FILTRES
+        function filterAds() {
+            const s = document.getElementById('globalSearch').value.toLowerCase();
+            const c = document.getElementById('catFilter').value;
+            const filtered = ads.filter(ad => ad.title.toLowerCase().includes(s) && (c === "" || ad.category === c));
+            renderAds(filtered, 'adGrid');
+        }
+
+        function setCategoryFilter(c) {
+            document.getElementById('catFilter').value = c;
+            filterAds();
+        }
+
+        // NAVIGATION
+        function showPage(id) {
+            if(!currentUser && ['add', 'favorites', 'profile'].includes(id)) return showPage('auth');
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
+            if(id === 'home') renderAds(ads, 'adGrid');
+            if(id === 'profile') renderMyAds();
+            if(id === 'favorites') renderAds(ads.filter(x => x.fav), 'favGrid');
+        }
+
+        // RENDU
+        function renderAds(data, container, isProfile = false) {
+            const grid = document.getElementById(container);
+            grid.innerHTML = data.length ? '' : '<p class="col-span-full text-center py-10 text-gray-400">Aucun résultat.</p>';
+            data.forEach(ad => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-3xl overflow-hidden card-shadow border border-gray-50 relative group">
+                        ${!isProfile ? `
+                        <button onclick="toggleFav(${ad.id})" class="absolute top-3 right-3 z-10 bg-white/90 w-10 h-10 rounded-full">
+                            <i class="${ad.fav ? 'fas text-red-600' : 'far text-gray-300'} fa-heart"></i>
+                        </button>` : `
+                        <button onclick="deleteAd(${ad.id})" class="absolute top-3 right-3 z-10 bg-red-600 text-white w-8 h-8 rounded-full">
+                            <i class="fas fa-trash-alt text-xs"></i>
+                        </button>`}
+                        <img onclick="showDetails(${ad.id})" src="${ad.images[0]}" class="h-48 w-full object-cover cursor-pointer transition group-hover:scale-105">
+                        <div class="p-4">
+                            <h4 class="text-red-600 font-black text-xl">${ad.price.toLocaleString()} AED</h4>
+                            <p class="font-bold text-gray-800 line-clamp-1">${ad.title}</p>
+                            <p class="text-[10px] uppercase font-black text-gray-400 mb-2">${ad.loc}</p>
+                            <div class="text-sm font-bold text-green-600"><i class="fas fa-phone-alt"></i> ${ad.phone}</div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function showDetails(id) {
+            const ad = ads.find(x => x.id === id);
+            document.getElementById('detailTitle').innerText = ad.title;
+            document.getElementById('detailPrice').innerText = ad.price.toLocaleString() + " AED";
+            document.getElementById('detailLoc').innerText = ad.loc + " • " + ad.category;
+            document.getElementById('detailDesc').innerText = ad.desc;
+            document.getElementById('detName').innerText = ad.seller;
+            document.getElementById('detInitial').innerText = ad.seller[0].toUpperCase();
+            document.getElementById('detPhone').innerText = ad.phone;
+            document.getElementById('detCall').href = "tel:" + ad.phone;
+            const gall = document.getElementById('detailGallery');
+            gall.innerHTML = '';
+            ad.images.forEach(img => gall.innerHTML += `<img src="${img}" class="gallery-img snap-center">`);
+            showPage('details');
+        }
+
+        // ACTIONS
+        document.getElementById('adForm').onsubmit = (e) => {
+            e.preventDefault();
+            if(!uploadedImagesBase64.length) return alert("Photo requise !");
+            ads.unshift({
+                id: Date.now(),
+                title: document.getElementById('adTitle').value,
+                price: parseInt(document.getElementById('adPrice').value),
+                seller: document.getElementById('adSeller').value,
+                phone: document.getElementById('adPhone').value,
+                loc: document.getElementById('adLoc').value,
+                category: document.getElementById('adCat').value,
+                desc: document.getElementById('adDesc').value,
+                images: uploadedImagesBase64,
+                owner: currentUser.email, fav: false
+            });
+            localStorage.setItem('dbz_final_v3', JSON.stringify(ads));
+            e.target.reset(); document.getElementById('previewContainer').innerHTML = '';
+            showPage('home');
+        };
+
+        function toggleFav(id) { 
+            const ad = ads.find(x => x.id === id); ad.fav = !ad.fav; 
+            localStorage.setItem('dbz_final_v3', JSON.stringify(ads));
+            renderAds(ads, 'adGrid');
+        }
+
+        function deleteAd(id) {
+            if(confirm("Supprimer ?")) {
+                ads = ads.filter(x => x.id !== id);
+                localStorage.setItem('dbz_final_v3', JSON.stringify(ads));
+                renderMyAds();
+            }
+        }
+
+        function renderMyAds() {
+            document.getElementById('profileHead').innerHTML = `<h2 class="font-black">${currentUser.email}</h2><button onclick="logout()" class="text-red-600 font-bold">Quitter</button>`;
+            renderAds(ads.filter(x => x.owner === currentUser.email), 'myAdsGrid', true);
+        }
+
+        // AUTH
+        function toggleAuthMode() { 
+            isLoginMode = !isLoginMode; 
+            document.getElementById('authTitle').innerText = isLoginMode ? "Connexion" : "Inscription";
+        }
+        function handleAuth() {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPass').value;
+            if(!email || !pass) return;
+            if(isLoginMode) {
+                const u = users.find(x => x.email === email && x.pass === pass);
+                if(u) login(u); else alert("Identifiants incorrects");
+            } else {
+                const nu = { email, pass }; users.push(nu);
+                localStorage.setItem('dbz_users', JSON.stringify(users)); login(nu);
+            }
+        }
+        function login(u) { currentUser = u; localStorage.setItem('dbz_logged_in', JSON.stringify(u)); updateAuthUI(); showPage('home'); }
+        function logout() { currentUser = null; localStorage.removeItem('dbz_logged_in'); updateAuthUI(); showPage('home'); }
+        function updateAuthUI() {
+            document.getElementById('authStatus').innerHTML = currentUser ? `<button onclick="showPage('profile')" class="bg-gray-100 px-4 py-2 rounded-full font-bold">${currentUser.email[0].toUpperCase()}</button>` : `<button onclick="showPage('auth')" class="text-red-600 font-bold">LOGIN</button>`;
+        }
+
+        window.onload = () => { updateAuthUI(); renderAds(ads, 'adGrid'); };
+    </script>
+</body>
+</html>
